@@ -23,6 +23,15 @@ body {
   color: var(--text);
   font-family: var(--sans);
   line-height: 1.6;
+  position: relative; /* stacking-context root so #bg-canvas (z-index:-1) sits between this background and normal content, not behind it */
+}
+
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  display: block;
 }
 
 a { color: var(--accent-2); text-decoration: none; }
