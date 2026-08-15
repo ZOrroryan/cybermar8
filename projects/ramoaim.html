@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RamoAim — Omar Ryan</title>
+<link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand">cyber<span>mar8</span></div>
+    <nav class="site-nav">
+      <a href="../index.html">Home</a>
+      <a href="https://github.com/ZOrroryan/aim-trainer" target="_blank" rel="noopener">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+
+<section class="detail-hero">
+  <div class="wrap">
+    <a class="back" href="../index.html#featured">← Featured projects</a>
+    <h1>RamoAim</h1>
+    <p class="summary">
+      A full-stack aim-training web game — 100 free levels, Endless mode, and ranked 1v1 — built on
+      vanilla JavaScript and 57 Netlify serverless functions, with hand-rolled session auth, optional
+      email-based 2FA, and Stripe-gated cosmetics. Live in production.
+    </p>
+    <div class="tags">
+      <span class="tag accent">Netlify Functions</span><span class="tag accent">Netlify Blobs</span>
+      <span class="tag accent">scrypt / HMAC Auth</span><span class="tag accent">2FA</span>
+      <span class="tag accent">Stripe</span><span class="tag accent">Electron</span>
+    </div>
+    <div class="meta-links">
+      <a href="https://ram-aim.cybermar8.com" target="_blank" rel="noopener">Live demo →</a>
+      <a href="https://github.com/ZOrroryan/aim-trainer" target="_blank" rel="noopener">Full repo &amp; docs →</a>
+    </div>
+  </div>
+</section>
+
+<div class="detail-body">
+  <div class="wrap">
+
+    <section>
+      <h2>Architecture</h2>
+      <div class="flow">Vanilla JS/HTML/CSS frontend (hash-routed SPA, Canvas gameplay)
+  → 57 Netlify Functions (auth, payments, leaderboards, ranked matchmaking, friends/chat)
+  → Netlify Blobs (accounts, sessions, ranked matches, rate limits — no external DB)
+  → Stripe Checkout (one-time Pro-pass tiers)
+  → Resend API (2FA codes, email verification)</div>
+      <p style="margin-top:16px;">Only two runtime dependencies power the entire backend: <code style="font-family: var(--mono); color: var(--accent-2);">stripe</code> and <code style="font-family: var(--mono); color: var(--accent-2);">@netlify/blobs</code>. A separate Electron wrapper packages the same live site as a Windows desktop app with auto-update.</p>
+    </section>
+
+    <section>
+      <h2>Authentication &amp; 2FA</h2>
+      <p>No auth library — scrypt password hashing with a random salt, and HMAC-SHA256-signed opaque session-id cookies (HttpOnly, Secure, SameSite=Lax) backed by a server-side, revocable session store in Netlify Blobs, all on Node's built-in <code style="font-family: var(--mono); color: var(--accent-2);">crypto</code> module.</p>
+      <p>2FA is optional and email-based: verifying an email enables it, and login then emails a 6-digit code instead of issuing a session directly — hashed, single-use, 10-minute expiry, capped at 5 attempts. Disabling 2FA requires re-entering the password.</p>
+      <p>Documented hardening: rate-limited constant-time login (a dummy hash comparison runs even for usernames that don't exist, to prevent enumeration), every function checks the requester owns the resource it's acting on, and score submissions are server-side validated against hits/shots/time/level consistency.</p>
+    </section>
+
+    <section>
+      <h2>Monetization — cosmetics only</h2>
+      <p><strong>All 100 campaign levels, Endless Mode, and ranked 1v1 are free.</strong> Progression gates on 3-starring a level, not on payment. Stripe Checkout sells a one-time "Pro pass" ($0.99/30 days, $9.99/year, or $29.99 forever — no subscriptions) that unlocks premium crosshair styles and 3D-shaded targets. The item shop says it plainly: <em>"Cosmetics only, never pay-to-win."</em></p>
+    </section>
+
+    <section>
+      <h2>Screenshots</h2>
+      <div class="shot-grid">
+        <div class="shot">
+          <img src="../images/ramoaim/landing.png" alt="RamoAim landing page" />
+          <div class="cap">The landing page — live stats, zero clutter.</div>
+        </div>
+        <div class="shot">
+          <img src="../images/ramoaim/gameplay.png" alt="RamoAim gameplay HUD" />
+          <div class="cap">In-run HUD: level, score, accuracy, hits, time.</div>
+        </div>
+        <div class="shot">
+          <img src="../images/ramoaim/shop.png" alt="RamoAim cosmetic item shop" />
+          <div class="cap">The cosmetic-only item shop.</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div><a href="../index.html">← Back to cybermar8.com</a></div>
+    <div class="links">
+      <a href="https://github.com/ZOrroryan" target="_blank" rel="noopener">github.com/ZOrroryan ↗</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cybersecurity Home Lab — Omar Ryan</title>
+<link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand">cyber<span>mar8</span></div>
+    <nav class="site-nav">
+      <a href="../index.html">Home</a>
+      <a href="https://github.com/ZOrroryan/cybersecurity-home-lab" target="_blank" rel="noopener">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+
+<section class="detail-hero">
+  <div class="wrap">
+    <a class="back" href="../index.html#featured">← Featured projects</a>
+    <h1>Cybersecurity Home Lab</h1>
+    <p class="summary">
+      A physical, self-racked Cisco network with a layered network-security-monitoring pipeline built on top:
+      SPAN-mirrored traffic feeding Security Onion (Suricata + Zeek), correlated in Splunk Enterprise.
+      Every device — router, firewall, both switches — is real hardware, not virtualized.
+    </p>
+    <div class="tags">
+      <span class="tag accent">Cisco IOS</span><span class="tag accent">Cisco ASA</span>
+      <span class="tag accent">VLAN Segmentation</span><span class="tag accent">SPAN</span>
+      <span class="tag accent">Suricata</span><span class="tag accent">Zeek</span><span class="tag accent">Splunk Enterprise</span>
+    </div>
+    <div class="meta-links">
+      <a href="https://github.com/ZOrroryan/cybersecurity-home-lab" target="_blank" rel="noopener">Full repo &amp; docs →</a>
+    </div>
+  </div>
+</section>
+
+<div class="detail-body">
+  <div class="wrap">
+
+    <section>
+      <div class="note">
+        <strong>Status: build documented, detection pipeline in progress.</strong>
+        The network build below is real and fully wired. Captured detections, Splunk dashboards, and
+        example alerts aren't populated yet — rather than invent them, this page describes the
+        architecture as built and will get a findings section once real detection data exists.
+      </div>
+    </section>
+
+    <section>
+      <h2>Architecture</h2>
+      <p>Three paths run over the same physical gear: production traffic, a passive visibility tap, and device management logging.</p>
+
+      <p><strong>Production path</strong></p>
+      <div class="flow">Internet/WAN
+  → Cisco ISR4331 router (edge routing)
+  → Cisco ASA5506-X firewall (ACLs, NAT, traffic control)
+  → Catalyst 3550 L3 switch (inter-VLAN routing via SVIs)
+  → Catalyst 2960X L2 switch (VLAN port assignment, PoE+)
+  → VLANs / endpoints (Raspberry Pi 4 nodes, lab hosts)</div>
+
+      <p style="margin-top:20px;"><strong>Visibility path</strong> — a SPAN port on the 2960X mirrors a one-way copy of traffic to the monitoring sensor. That interface carries no IP and isn't used for management, deliberately, since mixing that role with general device access would widen the sensor's own attack surface.</p>
+      <div class="flow">Catalyst 2960X SPAN port (mirrored copy, one-way)
+  → Security Onion sensor
+  → Suricata (signature-based IDS alerts)
+  → Zeek (protocol-level session telemetry: conn.log, dns.log, http.log)
+  → Splunk Enterprise (search, correlation, investigation)</div>
+
+      <p style="margin-top:20px;"><strong>Management path</strong> — all four Cisco devices forward syslog directly to Splunk as its own event category, separate from NSM telemetry.</p>
+
+      <p style="margin-top:20px; font-style: italic;">"Suricata tells you something matched a rule; Zeek tells you what actually happened; syslog tells you what the infrastructure itself did; Splunk is where all three get correlated into one investigation."</p>
+    </section>
+
+    <section>
+      <h2>Hardware</h2>
+      <div class="specs">
+        <div class="spec"><div class="k">ROUTER</div><div class="v">Cisco ISR4331/K9, 16GB flash</div></div>
+        <div class="spec"><div class="k">FIREWALL</div><div class="v">Cisco ASA5506-X, ASA 9.9(2), ASDM 7.9(2), FirePOWER 6.2.3</div></div>
+        <div class="spec"><div class="k">L3 SWITCH</div><div class="v">Catalyst WS-C3550-48-SMI (48-port, inter-VLAN SVIs)</div></div>
+        <div class="spec"><div class="k">L2 SWITCH</div><div class="v">Catalyst WS-C2960X-48FPD-L (48-port PoE+, SPAN source)</div></div>
+        <div class="spec"><div class="k">COMPUTE</div><div class="v">Multiple Raspberry Pi 4 units as Linux infrastructure nodes</div></div>
+        <div class="spec"><div class="k">PHYSICAL</div><div class="v">Self-built, self-racked 18U 4-post open-frame rack</div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>The build</h2>
+      <div class="shot-grid">
+        <div class="shot">
+          <img src="../images/home-lab/rack-build.png" alt="Rack build: Catalyst switches and ASA5506-X mounted" />
+          <div class="cap">The rack: Catalyst 2960X and 3550 switches, with the ASA5506-X below.</div>
+        </div>
+        <div class="shot">
+          <img src="../images/home-lab/overview.png" alt="Home lab workstation setup" />
+          <div class="cap">The monitoring/analysis side — terminal sessions into the lab environment.</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div><a href="../index.html">← Back to cybermar8.com</a></div>
+    <div class="links">
+      <a href="https://github.com/ZOrroryan" target="_blank" rel="noopener">github.com/ZOrroryan ↗</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

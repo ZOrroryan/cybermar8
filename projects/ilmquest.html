@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IlmQuest — Omar Ryan</title>
+<link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand">cyber<span>mar8</span></div>
+    <nav class="site-nav">
+      <a href="../index.html">Home</a>
+      <a href="https://github.com/ZOrroryan/islamic_learning_app" target="_blank" rel="noopener">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+
+<section class="detail-hero">
+  <div class="wrap">
+    <a class="back" href="../index.html#featured">← Featured projects</a>
+    <h1>IlmQuest</h1>
+    <p class="summary">
+      A Flutter mobile app for Islamic learning — real accounts, 2FA, live multiplayer game modes, and a
+      Firestore-backed, scholar-reviewed content pipeline. In active development, targeting iOS/Android;
+      not yet publicly released.
+    </p>
+    <div class="tags">
+      <span class="tag accent">Flutter / Dart</span><span class="tag accent">Riverpod</span>
+      <span class="tag accent">go_router</span><span class="tag accent">Firebase Auth</span>
+      <span class="tag accent">Firestore</span><span class="tag accent">Cloud Functions</span>
+    </div>
+    <div class="meta-links">
+      <a href="https://github.com/ZOrroryan/islamic_learning_app" target="_blank" rel="noopener">Full repo &amp; docs →</a>
+    </div>
+  </div>
+</section>
+
+<div class="detail-body">
+  <div class="wrap">
+
+    <section>
+      <h2>Architecture</h2>
+      <p style="margin-bottom:16px;">State/navigation are handled with Riverpod + go_router; every screen reads live Firestore data through typed providers rather than local mock state.</p>
+      <div class="arch-diagram">
+        <div class="arch-node accent">Flutter UI</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node">Riverpod providers</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node accent">Firebase Auth</div>
+        <div class="arch-arrow">+</div>
+        <div class="arch-node accent">Firestore</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node">Cloud Functions (Admin SDK)</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Accounts &amp; 2FA</h2>
+      <p>Anonymous-first authentication with guest→account link-upgrade, so nothing blocks a first-time user from playing immediately. Two-factor authentication is real, not cosmetic — enable/disable and verification run through dedicated Cloud Functions callables using the Admin SDK, deliberately outside client-writable Firestore rules so a stolen session token can't silently disable it.</p>
+    </section>
+
+    <section>
+      <h2>Game modes &amp; content</h2>
+      <p>A Family Team Game Mode supports both same-room, single-device play and a fully remote mode with Cloud-Functions-arbitrated turn resolution once a match leaves the lobby. A shared, reviewed trivia question bank (1,000+ questions across Quran, Seerah, Fiqh, Arabic vocabulary, and more categories) backs both the solo quiz modes and a Survival mode that ends on the first missed question. A live device-compass Qibla finder corrects for magnetic declination using the device's GPS position, rather than assuming magnetic north lines up with true north.</p>
+    </section>
+
+    <section>
+      <h2>Content pipeline</h2>
+      <p>Trivia content moves through a reviewed pipeline: draft CSVs → a deterministic build script → a versioned <code style="font-family: var(--mono); color: var(--accent-2);">question_bank_data.json</code> → seeded into Firestore via an Admin-SDK-only script. Every question carries a <code style="font-family: var(--mono); color: var(--accent-2);">verified</code> flag, and the UI visibly marks content pending scholarly review rather than presenting it as equivalent to reviewed material.</p>
+    </section>
+
+    <section>
+      <div class="note">
+        <strong>No public build yet.</strong> This is a mobile-first app (iOS/Android) still in active
+        development — there's no hosted web demo to link to here. The architecture, auth, and content
+        pipeline described above are all implemented and tested against a real Firebase backend today.
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div><a href="../index.html">← Back to cybermar8.com</a></div>
+    <div class="links">
+      <a href="https://github.com/ZOrroryan" target="_blank" rel="noopener">github.com/ZOrroryan ↗</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

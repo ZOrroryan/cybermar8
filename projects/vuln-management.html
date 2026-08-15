@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vulnerability Management &amp; STIG Compliance — Omar Ryan</title>
+<link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand">cyber<span>mar8</span></div>
+    <nav class="site-nav">
+      <a href="../index.html">Home</a>
+      <a href="https://github.com/ZOrroryan/Vulnerability-Management-and-Threat-Hunting-Projects" target="_blank" rel="noopener">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+
+<section class="detail-hero">
+  <div class="wrap">
+    <a class="back" href="../index.html#featured">← Featured projects</a>
+    <h1>Vulnerability Management &amp; STIG Compliance</h1>
+    <p class="summary">
+      A full vulnerability-management cycle on an Azure-hosted Windows VM using Tenable: baseline scan,
+      DISA/STIG compliance validation, an intentionally introduced regression, remediation, and a final
+      scan confirming the fix.
+    </p>
+    <div class="tags">
+      <span class="tag accent">Tenable Vulnerability Management</span><span class="tag accent">Microsoft Azure</span>
+      <span class="tag accent">DISA / STIG</span><span class="tag accent">Remediation</span>
+    </div>
+    <div class="meta-links">
+      <a href="https://github.com/ZOrroryan/Vulnerability-Management-and-Threat-Hunting-Projects" target="_blank" rel="noopener">Full repo &amp; docs →</a>
+    </div>
+  </div>
+</section>
+
+<div class="detail-body">
+  <div class="wrap">
+
+    <section>
+      <h2>Setup</h2>
+      <p>A Windows VM in Azure, scanned with a credentialed Tenable scan targeting general vulnerabilities plus the DISA Windows 10 STIG v3r2 benchmark.</p>
+      <div class="shot">
+        <img src="../images/vuln-mgmt/scan-config.png" alt="Tenable scan configuration with DISA Windows 10 STIG v3r2" />
+        <div class="cap">Credentialed scan configured against DISA Windows 10 STIG v3r2.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>STIG findings tracked</h2>
+      <p>Three specific controls were tracked through the whole cycle:</p>
+      <div class="specs">
+        <div class="spec"><div class="k">WN10-AU-000505</div><div class="v">Increase Security Event Log size — initial fail</div></div>
+        <div class="spec"><div class="k">WN10-SO-000025</div><div class="v">Rename Guest Account — initial fail</div></div>
+        <div class="spec"><div class="k">WN10-SO-000010</div><div class="v">Disable Guest Account — initial pass, then intentionally broken</div></div>
+      </div>
+      <div class="shot" style="margin-top:16px;">
+        <img src="../images/vuln-mgmt/initial-scan.png" alt="Initial Tenable scan results by severity" />
+        <div class="cap">Initial scan: 1 Critical, 15 High, 31 Medium, 3 Low (50 total).</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Regression, remediation, re-scan</h2>
+      <p>An outdated Firefox v110 was installed and the Guest account re-enabled to intentionally regress WN10-SO-000010, then the VM was re-scanned to confirm the tool actually caught it. Remediation followed: Firefox removed, the event log size increased, Guest renamed and disabled again, and Windows fully patched — then re-scanned to confirm.</p>
+      <table class="stat-table">
+        <tr><th>Severity</th><th>Scan 1</th><th>Scan 2</th><th>Scan 3</th><th>Scan 4</th></tr>
+        <tr><td>Critical</td><td>1</td><td>25</td><td>3</td><td>0</td></tr>
+        <tr><td>High</td><td>15</td><td>11</td><td>6</td><td>6</td></tr>
+        <tr><td>Medium</td><td>31</td><td>16</td><td>13</td><td>11</td></tr>
+        <tr><td>Low</td><td>3</td><td>3</td><td>2</td><td>2</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>50</strong></td><td><strong>55</strong></td><td><strong>24</strong></td><td><strong>19</strong></td></tr>
+      </table>
+      <p style="margin-top:12px;">Scan 2's spike is the deprecated Firefox install; scan 3's drop follows removing it; scan 4's critical count hits zero after fully patching Windows.</p>
+      <div class="shot" style="margin-top:16px; max-width: 480px;">
+        <img src="../images/vuln-mgmt/scan-trend.png" alt="Vulnerability severity trend chart across four scans" />
+        <div class="cap">The full four-scan trend, charted by severity.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Architecture</h2>
+      <div class="shot" style="max-width: 480px;">
+        <img src="../images/vuln-mgmt/architecture.png" alt="Lab architecture: Azure VM, Tenable console, scan engine" />
+        <div class="cap">Azure VM target, Tenable cloud console, and scan engine.</div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div><a href="../index.html">← Back to cybermar8.com</a></div>
+    <div class="links">
+      <a href="https://github.com/ZOrroryan" target="_blank" rel="noopener">github.com/ZOrroryan ↗</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

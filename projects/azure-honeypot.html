@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Azure Honeypot / Sentinel SIEM Lab — Omar Ryan</title>
+<link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand">cyber<span>mar8</span></div>
+    <nav class="site-nav">
+      <a href="../index.html">Home</a>
+      <a href="https://github.com/ZOrroryan/Azure-Honeypot-SIEM-Lab" target="_blank" rel="noopener">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+
+<section class="detail-hero">
+  <div class="wrap">
+    <a class="back" href="../index.html#featured">← Featured projects</a>
+    <h1>Azure Honeypot / Sentinel SIEM Lab</h1>
+    <p class="summary">
+      An intentionally exposed Windows 10 VM in Azure, used to capture real internet-borne brute-force
+      RDP attempts, then analyzed end-to-end with Microsoft Sentinel: KQL queries, GeoIP enrichment,
+      and a workbook mapping where the traffic actually came from.
+    </p>
+    <div class="tags">
+      <span class="tag accent">Microsoft Azure</span><span class="tag accent">Microsoft Sentinel</span>
+      <span class="tag accent">KQL</span><span class="tag accent">Log Analytics</span><span class="tag accent">GeoIP</span>
+    </div>
+    <div class="meta-links">
+      <a href="https://github.com/ZOrroryan/Azure-Honeypot-SIEM-Lab" target="_blank" rel="noopener">Full repo &amp; docs →</a>
+    </div>
+  </div>
+</section>
+
+<div class="detail-body">
+  <div class="wrap">
+
+    <section>
+      <h2>Setup</h2>
+      <p>The VM was deliberately weakened to attract real attack traffic rather than simulate it:</p>
+      <div class="flow">1. Windows 10 VM deployed in Azure
+2. NSG configured to allow all inbound traffic
+3. Windows Firewall disabled on the VM
+4. Failed RDP logon attempts land in Windows Security Event Logs
+5. Logs centralized into a Log Analytics Workspace via Microsoft Sentinel
+6. KQL queries run against the SecurityEvent table
+7. GeoIP watchlist imported to enrich attacker IPs with location
+8. Sentinel workbook built to visualize attack origins geographically</div>
+    </section>
+
+    <section>
+      <h2>What the data showed</h2>
+      <p>Querying <code style="font-family: var(--mono); color: var(--accent-2);">SecurityEvent | where EventID == '4625'</code> (Windows' failed-logon event) surfaced brute-force RDP attempts from across the open internet within hours of the VM going live. The GeoIP-enriched workbook mapped them by volume:</p>
+      <table class="stat-table">
+        <tr><th>Origin</th><th>Attempts</th></tr>
+        <tr><td>Jordanów, Poland</td><td>20,700</td></tr>
+        <tr><td>Tilburg, Netherlands</td><td>16,500</td></tr>
+        <tr><td>Ranchos, Argentina</td><td>2,250</td></tr>
+        <tr><td>Maarn, Netherlands</td><td>1,470</td></tr>
+        <tr><td>Vilobí del Penedès, Spain</td><td>1</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>Screenshots</h2>
+      <div class="shot-grid">
+        <div class="shot">
+          <img src="../images/azure-honeypot/event-logs.png" alt="Windows Security Event Viewer showing failed RDP logon attempts" />
+          <div class="cap">Windows Security Event Log — failed RDP logon attempts.</div>
+        </div>
+        <div class="shot">
+          <img src="../images/azure-honeypot/nsg-rules.png" alt="Azure Network Security Group allow-all inbound rules" />
+          <div class="cap">The NSG's intentionally permissive inbound rules.</div>
+        </div>
+        <div class="shot">
+          <img src="../images/azure-honeypot/kql-query.png" alt="KQL query against SecurityEvent for EventID 4625" />
+          <div class="cap">Querying SecurityEvent for EventID 4625 (failed logon) in Sentinel Logs.</div>
+        </div>
+        <div class="shot">
+          <img src="../images/azure-honeypot/geoip-query.png" alt="GeoIP-enriched query results" />
+          <div class="cap">GeoIP-enriched results — attacker IPs resolved to locations.</div>
+        </div>
+        <div class="shot">
+          <img src="../images/azure-honeypot/attack-map.png" alt="Sentinel workbook attack map" />
+          <div class="cap">The Sentinel workbook's geographic attack map.</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div><a href="../index.html">← Back to cybermar8.com</a></div>
+    <div class="links">
+      <a href="https://github.com/ZOrroryan" target="_blank" rel="noopener">github.com/ZOrroryan ↗</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
