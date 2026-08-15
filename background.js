@@ -1,9 +1,8 @@
-// Subtle matrix-style code rain, fixed behind all page content. Respects
-// prefers-reduced-motion and pauses when the tab isn't visible.
+// Subtle matrix-style code rain, fixed behind all page content. Runs
+// regardless of prefers-reduced-motion (deliberate call for this site: the
+// effect is slow, low-opacity, and non-flashing) — still pauses when the
+// tab isn't visible to save CPU/battery.
 (function () {
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion) return;
-
   var canvas = document.createElement('canvas');
   canvas.id = 'bg-canvas';
   document.body.prepend(canvas);
